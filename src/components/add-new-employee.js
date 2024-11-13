@@ -141,7 +141,7 @@ export class AddNewEmployee extends connect(store)(LitElement) {
     constructor() {
         super();
         this.resetForm();
-        this.updateFromState(); // Set initial form state based on Redux store
+        this.updateFromState();
 
     }
 
@@ -152,11 +152,11 @@ export class AddNewEmployee extends connect(store)(LitElement) {
         
         if (path === '/employees/edit' && selectedEmployee) {
             this.formType = 'edit';
-            this.populateEmployeeData(selectedEmployee);  // Load data for editing
+            this.populateEmployeeData(selectedEmployee);
             console.log('Form type updated to edit');
         } else {
             this.formType = 'add';
-            this.resetForm();  // Clear form for adding new employee
+            this.resetForm(); 
             console.log('Form type updated to add');
         }
     }
@@ -261,9 +261,9 @@ export class AddNewEmployee extends connect(store)(LitElement) {
             const value = this[field];
             
             if (!value) {
-                errors[field] = message;  // Required field
+                errors[field] = message;
             } else if (pattern && !pattern.test(value)) {
-                errors[field] = message;  // Pattern validation
+                errors[field] = message;
             }
         });
     
@@ -275,7 +275,7 @@ export class AddNewEmployee extends connect(store)(LitElement) {
     handleSubmit() {
 
         if (!this.validate()) {
-            console.log("Validation failed", this.errors); // Debug line if validation fails
+            console.log("Validation failed", this.errors);
             return;
         }
         const employeeData = {
