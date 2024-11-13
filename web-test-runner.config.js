@@ -1,6 +1,7 @@
 
 import { playwrightLauncher } from '@web/test-runner-playwright';
 
+
 export default {
   files: 'tests/**/*.test.js',
   plugins: [
@@ -14,4 +15,9 @@ export default {
       ui: 'bdd', 
     },
   },
+  browsers: [
+    playwrightLauncher({ product: 'chromium' }),
+    //playwrightLauncher({ product: 'firefox' }),
+    //playwrightLauncher({ product: 'webkit' }),
+  ],
 };

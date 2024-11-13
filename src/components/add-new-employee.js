@@ -24,14 +24,6 @@ export class AddNewEmployee extends connect(store)(LitElement) {
                 box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             }
 
-            .header-text {
-                color: #ff6d00;
-                font-size: 24px;
-                font-weight: bold;
-                text-align: center;
-                margin-bottom: 20px;
-            }
-
             .back-link {
                 color: #ff6d00;
                 text-decoration: none;
@@ -55,6 +47,10 @@ export class AddNewEmployee extends connect(store)(LitElement) {
                 font-weight: bold;
                 color: #ff6d00;
                 font-size: 14px;
+            }
+
+            .field-text {
+                color: black;
             }
 
             input, select {
@@ -104,10 +100,6 @@ export class AddNewEmployee extends connect(store)(LitElement) {
             @media (max-width: 480px) {
                 .add-emp-container {
                     padding: 15px;
-                }
-
-                .header-text {
-                    font-size: 20px;
                 }
 
                 label {
@@ -205,7 +197,7 @@ export class AddNewEmployee extends connect(store)(LitElement) {
             <home-button></home-button>
             <h2 class="header-text">${headerText}</h2>
             ${this.formFields.map(field => this.renderField(field))}
-            <button @click="${this.handleSubmit}">${buttonText}</button>
+            <button @click="${this.handleSubmit}" data-id="submit-button">${buttonText}</button>
         </div>
     `;
     }
@@ -219,7 +211,7 @@ export class AddNewEmployee extends connect(store)(LitElement) {
         <div class="form-group">
             <label class="field-text">${label}</label>
             ${options?.length > 0 ? html`
-                <select .value="${value}" @change="${e => this.handleInput(e, property)}">
+                <select .value="${value}" @change="${e => this.handleInput(e, property)}" data-id="${property}-select">
                     ${options.map(option => html`<option value="${option}">${option}</option>`)}
                 </select>
             ` : html`
@@ -228,6 +220,7 @@ export class AddNewEmployee extends connect(store)(LitElement) {
                     .value="${value}"
                     placeholder="${placeholder}"
                     @input="${e => this.handleInput(e, property)}"
+                    data-id="${property}-input"
                 />
             `}
             ${error ? html`<div class="error" role="alert">${error}</div>` : ''}

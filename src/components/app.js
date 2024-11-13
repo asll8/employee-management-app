@@ -12,6 +12,12 @@ class App extends LitElement {
     }
   `;
 
+    createRenderRoot() {
+      // Ensuring that Shadow DOM is open
+      return this.attachShadow({ mode: 'open' });
+    }
+
+
     async firstUpdated() {
         await this.updateComplete;
         const outlet = this.renderRoot.querySelector('#outlet');
@@ -23,11 +29,8 @@ class App extends LitElement {
     }
       
       render() {
-        const path = window.location.pathname;
         return html`
-          <div id="outlet">
-
-          </div>
+          <div id="outlet"></div>
         `;
       }
 }
