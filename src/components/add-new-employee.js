@@ -163,6 +163,7 @@ export class AddNewEmployee extends connect(store)(LitElement) {
         this.department = employee.department || localize("departmentOptionAnalytics");
         this.position = employee.position || localize("positionOptionJunior");
         this.selectedEmployee = employee;
+        this.requestUpdate();
     }
 
     get formFields() {
@@ -212,7 +213,7 @@ export class AddNewEmployee extends connect(store)(LitElement) {
             <label class="field-text">${label}</label>
             ${options?.length > 0 ? html`
                 <select .value="${value}" @change="${e => this.handleInput(e, property)}" data-id="${property}-select">
-                    ${options.map(option => html`<option value="${option}">${option}</option>`)}
+                    ${options.map(option => html`<option ?selected="${value === option}">${option}</option>`)}
                 </select>
             ` : html`
                 <input
