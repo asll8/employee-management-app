@@ -1,23 +1,23 @@
-
 import { playwrightLauncher } from '@web/test-runner-playwright';
 
-
 export default {
-  files: 'tests/**/*.test.js',
-  plugins: [
-    playwrightLauncher({ 
-      browsers: ['chromium', 'firefox', 'webkit'],
-    }),
-  ],
+  rootDir: './',
+  files: ['tests/**/*.test.js'],
   nodeResolve: true,
-  testFramework: {
-    config: {
-      ui: 'bdd', 
-    },
-  },
   browsers: [
     playwrightLauncher({ product: 'chromium' }),
     //playwrightLauncher({ product: 'firefox' }),
     //playwrightLauncher({ product: 'webkit' }),
   ],
+  testFramework: {
+    config: {
+      ui: 'bdd',
+      timeout: '2000',
+    },
+  },
+  plugins: [],
+  coverageConfig: {
+    include: ['src/**/*.{js,ts}'],
+    exclude: ['tests/**/*'],
+  },
 };
