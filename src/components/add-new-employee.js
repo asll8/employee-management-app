@@ -2,7 +2,7 @@ import { LitElement, html, css } from "lit";
 import { localize } from '../localization/localize.js';
 import "./home-button.js"
 import { connect } from '../utils/connect.js';
-import generateNewId from '../utils/helpers.js';
+import { generateNewId, formatDateToHTML, formatDateForStorage } from '../utils/helpers.js';
 import store from '../store/store.js'
 import {
     addEmployee,
@@ -156,8 +156,8 @@ export class AddNewEmployee extends connect(store)(LitElement) {
     populateEmployeeData(employee) {
         this.firstName = employee.firstName || '';
         this.lastName = employee.lastName || '';
-        this.dateOfEmployment = employee.dateOfEmployment || '';
-        this.dateOfBirth = employee.dateOfBirth || '';
+        this.dateOfEmployment = employee.dateOfEmployment ? formatDateToHTML(employee.dateOfEmployment) : '';
+        this.dateOfBirth = employee.dateOfBirth ? formatDateToHTML(employee.dateOfBirth) : '';
         this.phone = employee.phone || '';
         this.email = employee.email || '';
         this.department = employee.department || localize("departmentOptionAnalytics");
@@ -276,8 +276,8 @@ export class AddNewEmployee extends connect(store)(LitElement) {
             id: this.formType === 'edit' ? this.selectedEmployee?.id : generateNewId(),
             firstName: this.firstName,
             lastName: this.lastName,
-            dateOfEmployment: this.dateOfEmployment,
-            dateOfBirth: this.dateOfBirth,
+            dateOfEmployment: formatDateForStorage(this.dateOfEmployment),
+            dateOfBirth: formatDateForStorage(this.dateOfBirth),
             phone: this.phone,
             email: this.email,
             department: this.department,
