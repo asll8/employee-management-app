@@ -7,8 +7,8 @@ import {
   BrowserContext,
 } from 'puppeteer-core';
 import { BrowserLauncher, TestRunnerCoreConfig } from '@web/test-runner-core';
-import { findExecutablePath } from './findExecutablePath';
-import { ChromeLauncherPage } from './ChromeLauncherPage';
+import { findExecutablePath } from './findExecutablePath.js';
+import { ChromeLauncherPage } from './ChromeLauncherPage.js';
 
 function capitalize(str: string) {
   return `${str[0].toUpperCase()}${str.substring(1)}`;
@@ -63,13 +63,13 @@ export class ChromeLauncher implements BrowserLauncher {
     if (!customPuppeteer) {
       // without a custom puppeteer, we use the locally installed chrome
       this.name = 'Chrome';
-    } else if (!this.launchOptions?.product || this.launchOptions.product === 'chrome') {
+    } else if (!this.launchOptions?.browser || this.launchOptions.browser === 'chrome') {
       // with puppeteer we use the a packaged chromium, puppeteer calls it chrome but we
       // should call it chromium to avoid confusion
       this.name = 'Chromium';
     } else {
-      // otherwise take the product name directly
-      this.name = capitalize(this.launchOptions.product);
+      // otherwise take the browser name directly
+      this.name = capitalize(this.launchOptions.browser);
     }
   }
 
@@ -79,11 +79,15 @@ export class ChromeLauncher implements BrowserLauncher {
   }
 
   launchBrowser(options: PuppeteerNodeLaunchOptions = {}) {
+    const mergedOptions: PuppeteerNodeLaunchOptions = {
+      headless: true,
+      ...this.launchOptions,
+      ...options,
+    };
     if (this.customPuppeteer) {
-      const mergedOptions = { ...this.launchOptions, ...options };
       // launch using a custom puppeteer instance
       return this.customPuppeteer.launch(mergedOptions).catch(error => {
-        if (mergedOptions.product === 'firefox') {
+        if (mergedOptions.browser === 'firefox') {
           console.warn(
             '\nUsing puppeteer with firefox is experimental.\n' +
               'Check the docs at https://github.com/modernweb-dev/web/tree/master/packages/test-runner-puppeteer' +
@@ -95,8 +99,6 @@ export class ChromeLauncher implements BrowserLauncher {
     }
 
     // launch using puppeteer-core, connecting to an installed browser
-    const mergedOptions = { ...this.launchOptions, ...options };
-
     // add a default executable path if the user did not provide any
     if (!mergedOptions.executablePath) {
       if (!this.cachedExecutablePath) {
@@ -153,7 +155,7 @@ export class ChromeLauncher implements BrowserLauncher {
 
   async startDebugSession(sessionId: string, url: string) {
     if (!this.debugBrowser || !this.debugBrowserContext) {
-      this.debugBrowser = await this.launchBrowser({ devtools: true });
+      this.debugBrowser = await this.launchBrowser({ devtools: true, headless: false });
       this.debugBrowserContext = await this.createBrowserContextFn({
         config: this.config!,
         browser: this.debugBrowser,
@@ -183,7 +185,7 @@ export class ChromeLauncher implements BrowserLauncher {
     return new ChromeLauncherPage(
       this.config!,
       this.testFiles!,
-      this.launchOptions?.product ?? 'chromium',
+      this.launchOptions?.browser ?? 'chromium',
       await puppeteerPagePromise,
     );
   }

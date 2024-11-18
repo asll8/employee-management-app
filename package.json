@@ -9,7 +9,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "web-test-runner",
-    "test:watch": "wtr --watch"
+    "test:watch": "web-test-runner --watch"
   },
   "keywords": [],
   "author": "",
@@ -17,27 +17,25 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.3.0",
     "@vaadin/router": "^2.0.0",
-    "lit": "^3.2.1",
     "redux": "^5.0.1"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.26.0",
-    "@esm-bundle/chai": "^4.3.4-fix.0",
     "@open-wc/testing": "^4.0.0",
     "@open-wc/testing-helpers": "^3.0.1",
-    "@testing-library/dom": "^10.4.0",
-    "@testing-library/jest-dom": "^5.16.5",
-    "@testing-library/react": "^16.0.1",
     "@testing-library/user-event": "^14.5.2",
+    "@web/dev-server": "^0.4.6",
+    "@web/dev-server-esbuild": "^1.0.3",
+    "@web/dev-server-import-maps": "^0.2.1",
     "@web/dev-server-legacy": "^2.1.1",
-    "@web/test-runner": "^0.15.0",
-    "@web/test-runner-commands": "^0.4.2",
-    "@web/test-runner-playwright": "^0.9.0",
-    "babel-jest": "^29.7.0",
+    "@web/test-runner": "^0.19.0",
+    "@web/test-runner-commands": "^0.9.0",
+    "@web/test-runner-playwright": "^0.11.0",
+    "aria-query": "^5.3.0",
+    "esbuild": "^0.24.0",
     "eslint": "^8.15.0",
     "esm": "^3.2.25",
-    "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0",
+    "lit": "^3.2.1",
+    "playwright": "^1.48.2",
     "vite": "^5.4.11"
   }
 }

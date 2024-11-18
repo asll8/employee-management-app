@@ -1,23 +1,31 @@
 import { playwrightLauncher } from '@web/test-runner-playwright';
+import { legacyPlugin } from '@web/dev-server-legacy';
 
 export default {
-  rootDir: './',
-  files: ['tests/**/*.test.js'],
+  browsers: [playwrightLauncher({ product: 'chromium', channel: 'chrome' })],
+  files: 'tests/**/*.test.js',
   nodeResolve: true,
-  browsers: [
-    playwrightLauncher({ product: 'chromium' }),
-    //playwrightLauncher({ product: 'firefox' }),
-    //playwrightLauncher({ product: 'webkit' }),
-  ],
   testFramework: {
     config: {
-      ui: 'bdd',
-      timeout: '2000',
+      timeout: 10000,
     },
   },
-  plugins: [],
   coverageConfig: {
-    include: ['src/**/*.{js,ts}'],
-    exclude: ['tests/**/*'],
+    exclude: ['node_modules/**', 'test/**'],
   },
+  plugins: [
+    legacyPlugin({
+      polyfills: {
+        webcomponents: true,
+        custom: [
+          {
+            name: 'lit-polyfill-support',
+            path: 'node_modules/lit/polyfill-support.js',
+            test: "!('attachShadow' in Element.prototype)",
+            module: false,
+          },
+        ],
+      },
+    }),
+  ],
 };
